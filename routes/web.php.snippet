@@ -1,0 +1,19 @@
+<?php
+// Salin dan gabungkan route ini ke routes/web.php project Laravel.
+// Jangan menimpa route bawaan yang sudah ada.
+use Illuminate\Support\Facades\Route;
+
+Route::view('/admin/login', 'auth.login')->name('admin.login');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::view('/', 'admin.dashboard')->name('dashboard');
+    Route::view('/packages', 'admin.packages.index')->name('packages.index');
+    Route::view('/packages/create', 'admin.packages.create')->name('packages.create');
+    Route::view('/assignments', 'admin.assignments.index')->name('assignments.index');
+    Route::view('/customers', 'admin.customers.index')->name('customers.index');
+    Route::view('/couriers', 'admin.couriers.index')->name('couriers.index');
+    Route::view('/cod', 'admin.cod.index')->name('cod.index');
+    Route::view('/shipping-rates', 'admin.shipping-rates.index')->name('shipping-rates.index');
+});
+// Catatan: route di atas hanya untuk melihat UI. Autentikasi dan logout aman
+// harus diproses melalui Laravel Auth + middleware, bukan route view biasa.
