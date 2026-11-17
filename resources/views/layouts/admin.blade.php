@@ -94,12 +94,15 @@
         </nav>
 
         {{-- Tombol Logout. --}}
-        <div class="sidebar-bottom">
-            <a href="{{ route('admin.login') }}">
-                <img src="{{ asset('assets/icons/logout.png') }}" alt="">
-                <span>Logout</span>
-            </a>
-        </div>
+       <div class="sidebar-bottom">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="logout-button">
+            <img src="{{ asset('assets/icons/logout.png') }}" alt="Logout">
+            <span>Logout</span>
+        </button>
+    </form>
+</div>
 
     </aside>
 

@@ -1,8 +1,58 @@
+
 @extends('layouts.admin')
+
 @section('title', 'Tarif Pengiriman')
+
 @section('content')
-    {-- Judul dan keterangan menjelaskan tujuan halaman fitur ini. --}
-    <div class="page-heading"><div><small class="eyebrow">PRIANGAN KILAT EXPRESS</small><h1>Tarif Pengiriman</h1><p>Admin hanya dapat melihat tarif. Perubahan tarif merupakan hak Manager.</p></div></div>
-    {-- Placeholder akan diganti tabel/form interaktif pada tahap implementasi fitur. --}
-    <section class="panel placeholder"><i class="bi bi-tools"></i><h3>Kerangka halaman siap</h3><p>Komponen halaman ini akan kita bangun pada tahap berikutnya.</p></section>
+    <div class="page-heading">
+        <div>
+            <small class="eyebrow">PRIANGAN KILAT EXPRESS</small>
+            <h1>Tarif Pengiriman</h1>
+        </div>
+    </div>
+
+    <div class="shipping-rate-section">
+        <div class="shipping-rate-header">
+            <div>
+                <h5>Daftar Tarif Pengiriman</h5>
+                <p>Informasi tarif pengiriman berdasarkan zona tujuan.</p>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table shipping-rate-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Zona</th>
+                        <th>Nama Zona</th>
+                        <th>Tarif per Kg</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse ($tarifs as $index => $tarif)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>Zona {{ $tarif->zona }}</td>
+                            <td>{{ $tarif->nama_zona }}</td>
+                            <td>
+                                Rp {{ number_format((float) $tarif->tarif_per_kg, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4">
+                                Belum ada data tarif pengiriman.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div class="shipping-rate-footer">
+            Total {{ $tarifs->count() }} zona pengiriman
+        </div>
+    </div>
 @endsection

@@ -46,71 +46,68 @@
     {{-- Panel formulir login Admin. --}}
     <main class="login-panel">
 
-        <form
-            class="login-card"
-            id="loginForm"
-            action="{{ route('admin.dashboard') }}"
-            method="GET"
+        
+<form
+    class="login-card"
+    id="loginForm"
+    action="{{ route('login.process') }}"
+    method="POST"
+>
+    @csrf
+
+    {{-- Judul dan deskripsi formulir login --}}
+    <small class="eyebrow">PORTAL ADMINISTRATOR</small>
+
+    <h2>Selamat Datang</h2>
+
+    <p>Masuk untuk mengelola operasional pengiriman.</p>
+
+    {{-- Input email Admin --}}
+    <label for="email">Email</label>
+
+    <input
+        id="email"
+        name="email"
+        type="email"
+        value="{{ old('email') }}"
+        placeholder="Masukkan email"
+        required
+    >
+
+    {{-- Input password Admin --}}
+    <label for="password">Password</label>
+
+    <div class="password-wrap">
+        <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Masukkan password"
+            required
         >
 
-            {{-- Judul dan deskripsi formulir login. --}}
-            <small class="eyebrow">PORTAL ADMINISTRATOR</small>
+        <button
+            type="button"
+            id="togglePassword"
+            aria-label="Tampilkan password"
+        >
+            <i class="bi bi-eye"></i>
+        </button>
+    </div>
 
-            <h2>Selamat Datang</h2>
+    {{-- Pesan kesalahan login dari Laravel --}}
+    @if ($errors->any())
+        <div class="error" role="alert">
+            {{ $errors->first() }}
+        </div>
+    @endif
 
-            <p>Masuk untuk mengelola operasional pengiriman.</p>
-
-            {{-- Input email atau username Admin. --}}
-            <label for="username">Email / Username</label>
-
-            <input
-                id="username"
-                name="username"
-                type="text"
-                placeholder="Masukkan email atau username"
-                required
-            >
-
-            {{-- Input password Admin. --}}
-            <label for="password">Password</label>
-
-            <div class="password-wrap">
-
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Masukkan password"
-                    required
-                >
-
-                {{-- Tombol untuk menampilkan atau menyembunyikan password. --}}
-                <button
-                    type="button"
-                    id="togglePassword"
-                    aria-label="Tampilkan password"
-                >
-                    <i class="bi bi-eye"></i>
-                </button>
-
-            </div>
-
-            {{-- Tempat menampilkan pesan kesalahan login. --}}
-            <div id="loginError" class="error" role="alert"></div>
-
-            {{-- Tombol masuk ke halaman Admin. --}}
-            <button class="primary-button" type="submit">
-                Masuk
-                <i class="bi bi-arrow-right"></i>
-            </button>
-
-            {{-- Keterangan bahwa autentikasi belum diaktifkan. --}}
-            <small class="demo-note">
-                Tampilan awal — login belum terhubung ke autentikasi Laravel.
-            </small>
-
-        </form>
-
+    {{-- Tombol masuk --}}
+    <button class="primary-button" type="submit">
+        Masuk
+        <i class="bi bi-arrow-right"></i>
+    </button>
+</form>
     </main>
 
     {{-- JavaScript untuk fungsi interaksi halaman login. --}}
@@ -118,3 +115,4 @@
 
 </body>
 </html>
+    

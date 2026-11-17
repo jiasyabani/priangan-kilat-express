@@ -1,16 +1,13 @@
-
 @extends('layouts.admin')
 
 @section('title', 'Dashboard')
 
 @section('content')
-
     {{-- Heading dashboard dan tombol pintas untuk input paket baru. --}}
     <div class="page-heading">
         <div>
             <small class="eyebrow">RINGKASAN OPERASIONAL</small>
             <h1>Dashboard Admin</h1>
-            <p>Pantau aktivitas pengiriman Priangan Kilat Express.</p>
         </div>
 
         {{-- Tombol menuju halaman input paket. --}}
@@ -19,10 +16,9 @@
         </a>
     </div>
 
-    {{-- Kartu statistik menggunakan ikon PNG transparan. --}}
-    {{-- Angka berikut masih berupa data contoh dan nantinya diganti query database. --}}
+    {{-- Kartu statistik menggunakan ikon PNG. --}}
+    {{-- Angka berikut masih berupa data contoh. --}}
     <div class="stats">
-
         {{-- Statistik jumlah paket hari ini. --}}
         <article class="stat-card">
             <span class="stat-icon">
@@ -70,17 +66,13 @@
             <p>Gagal Kirim</p>
             <strong>10</strong>
         </article>
-
     </div>
 
     {{-- Tabel ringkasan aktivitas paket terbaru. --}}
     <section class="panel">
-
-        {{-- Judul dan tautan menuju seluruh data paket. --}}
         <div class="panel-heading">
             <div>
                 <h3>Aktivitas Paket Terbaru</h3>
-                <p>Contoh ringkasan data pengiriman.</p>
             </div>
 
             <a href="{{ route('admin.packages.index') }}">
@@ -88,7 +80,6 @@
             </a>
         </div>
 
-        {{-- Tabel informasi paket terbaru. --}}
         <div class="table-responsive">
             <table>
                 <thead>
@@ -133,7 +124,5 @@
                 </tbody>
             </table>
         </div>
-
     </section>
-
 @endsection
