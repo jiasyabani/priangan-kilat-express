@@ -1,0 +1,373 @@
+
+:root {
+    --orange: #FF7A1A;
+    --orange-dark: #E85D04;
+    --orange-light: #FFE8D6;
+    --blue: #8FD3F4;
+    --blue-light: #E6F6FD;
+    --white: #FFFFFF;
+    --text: #334155;
+    --muted: #64748B;
+    --border: #E2E8F0;
+    --success: #22C55E;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--blue-light);
+    color: var(--text);
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* SIDEBAR */
+
+.manager-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background: var(--blue);
+    padding: 25px 17px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.manager-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 5px 8px 35px;
+}
+
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    background: var(--orange);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+}
+
+.manager-brand strong {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.manager-brand small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-top: 3px;
+}
+
+.sidebar-heading {
+    color: #486477;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    padding: 0 10px;
+    margin-bottom: 12px;
+}
+
+/* NAVIGASI */
+
+.manager-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.manager-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #29475B;
+    transition: .2s;
+}
+
+.manager-nav a span {
+    font-size: 19px;
+    width: 22px;
+    text-align: center;
+}
+
+.manager-nav a:hover,
+.manager-nav a.active {
+    background: var(--orange);
+    color: var(--white);
+}
+
+/* LOGOUT */
+
+.manager-sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(36, 54, 75, .15);
+    padding-top: 15px;
+}
+
+.manager-sidebar-bottom form {
+    width: 100%;
+}
+
+.manager-sidebar-bottom button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: #29475B;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.manager-sidebar-bottom button:hover {
+    background: var(--orange-light);
+    color: var(--orange-dark);
+}
+
+/* AREA UTAMA */
+
+.manager-main {
+    margin-left: 240px;
+    min-height: 100vh;
+}
+
+/* TOPBAR */
+
+.manager-topbar {
+    height: 72px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbar-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.manager-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-avatar {
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    background: var(--orange-light);
+    color: var(--orange-dark);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+}
+
+.manager-profile strong {
+    display: block;
+    font-size: 12px;
+}
+
+.manager-profile small {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+/* KONTEN */
+
+.manager-content {
+    padding: 30px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+/* JUDUL HALAMAN */
+
+.page-heading {
+    margin-bottom: 25px;
+}
+
+.page-heading h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+.page-heading p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* KARTU DASHBOARD */
+
+.manager-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.manager-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 3px 12px rgba(36, 54, 75, .04);
+}
+
+.manager-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.manager-card strong {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* TABEL DAN PANEL */
+
+.container {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(36, 54, 75, .04);
+    overflow-x: auto;
+}
+
+.container h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    margin-bottom: 22px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.table th {
+    background: var(--blue-light);
+    color: var(--text);
+    font-weight: 600;
+    text-align: left;
+}
+
+.table th,
+.table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.table input {
+    width: 150px;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: inherit;
+}
+
+.table button {
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 9px 17px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.table button:hover {
+    background: var(--orange-dark);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .manager-sidebar {
+        width: 210px;
+    }
+
+    .manager-main {
+        margin-left: 210px;
+    }
+
+    .manager-content {
+        padding: 20px;
+    }
+
+    .manager-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .manager-sidebar {
+        width: 70px;
+        padding: 20px 8px;
+    }
+
+    .manager-brand strong,
+    .manager-brand small,
+    .sidebar-heading,
+    .manager-nav a:not(.active) {
+        display: none;
+    }
+
+    .manager-nav a {
+        justify-content: center;
+        font-size: 0;
+    }
+
+    .manager-main {
+        margin-left: 70px;
+    }
+
+    .manager-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .manager-content {
+        padding: 15px;
+    }
+
+    .manager-topbar {
+        padding: 0 15px;
+    }
+}

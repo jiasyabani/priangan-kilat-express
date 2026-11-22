@@ -51,8 +51,11 @@ class PusatWilayahService
                 ];
             }
 
-            // Zona harus berupa angka 1, 2, atau 3.
-            if (!in_array($zona, [1, 2, 3], true)) {
+            // Memastikan zona berupa angka 1, 2, atau 3.
+            if (
+                !is_numeric($zona) ||
+                !in_array((int) $zona, [1, 2, 3], true)
+            ) {
                 return [
                     'tersedia' => false,
                     'zona' => null,
@@ -62,16 +65,16 @@ class PusatWilayahService
 
             return [
                 'tersedia' => true,
-                'zona' => $zona,
+                'zona' => (int) $zona,
                 'pesan' => 'Zona berhasil ditemukan.',
             ];
 
-       } catch (ConnectionException $e) {
-    return [
-        'tersedia' => false,
-        'zona' => null,
-        'pesan' => $e->getMessage(),
-    ];
-}
+        } catch (ConnectionException $e) {
+            return [
+                'tersedia' => false,
+                'zona' => null,
+                'pesan' => 'Layanan Pusat Wilayah tidak dapat dihubungi.',
+            ];
+        }
     }
 }

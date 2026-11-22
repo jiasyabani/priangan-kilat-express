@@ -55,7 +55,6 @@
 
     </div>
 
-
     {{-- Tabel data paket --}}
     <div class="panel package-table-panel">
 
@@ -117,24 +116,59 @@
                                 {{ $paket->jumlah_gagal }}
                             </td>
 
+                            {{-- Aksi paket --}}
                             <td>
-                                <span class="action-label">
-                                    @if ($paket->status === 'Diterima')
-                                        Proses
-                                    @elseif ($paket->status === 'Transit')
+
+                                @if ($paket->status === 'Diterima')
+
+                                    <form
+                                        action="{{ route('admin.packages.transit', $paket->id) }}"
+                                        method="POST"
+                                        style="display: inline;"
+                                        onsubmit="return confirm('Ubah status paket menjadi Transit?')"
+                                    >
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <button
+                                            type="submit"
+                                            class="action-label"
+                                            style="border: none; background: transparent; padding: 0; font: inherit; cursor: pointer;"
+                                        >
+                                            Proses
+                                        </button>
+                                    </form>
+
+                                @elseif ($paket->status === 'Transit')
+
+                                    <a href="{{ route('admin.assignments.index') }}"
+                                        class="action-label">
                                         Tugaskan
-                                    @elseif ($paket->status === 'Dikirim')
+                                    </a>
+
+                                @elseif ($paket->status === 'Dikirim')
+
+                                    <a href="{{ route('admin.packages.show', $paket->id) }}"
+                                        class="action-label">
                                         Detail
-                                    @elseif ($paket->status === 'Gagal Kirim')
-                                        @if ($paket->jumlah_gagal < 2)
-                                            Kirim ulang
-                                        @else
-                                            Retur
-                                        @endif
-                                    @else
+                                    </a>
+
+                                @elseif ($paket->status === 'Gagal Kirim')
+
+                                    <a href="{{ route('admin.packages.show', $paket->id) }}"
+                                        class="action-label">
+                                        {{ $paket->jumlah_gagal < 2 ? 'Kirim ulang' : 'Retur' }}
+                                    </a>
+
+                                @else
+
+                                    <a href="{{ route('admin.packages.show', $paket->id) }}"
+                                        class="action-label">
                                         Detail
-                                    @endif
-                                </span>
+                                    </a>
+
+                                @endif
+
                             </td>
 
                         </tr>
@@ -155,19 +189,23 @@
 
         </div>
 
-      @if ($pakets->hasPages())
-    <div class="package-pagination">
-        @for ($page = 1; $page <= $pakets->lastPage(); $page++)
-            <a
-                href="{{ $pakets->url($page) }}"
-                class="{{ $pakets->currentPage() == $page ? 'active' : '' }}"
-            >
-                {{ $page }}
-            </a>
-        @endfor
-    </div>
-@endif
+        {{-- Pagination --}}
+        @if ($pakets->hasPages())
+            <div class="package-pagination">
 
+                @for ($page = 1; $page <= $pakets->lastPage(); $page++)
+                    <a
+                        href="{{ $pakets->url($page) }}"
+                        class="{{ $pakets->currentPage() == $page ? 'active' : '' }}"
+                    >
+                        {{ $page }}
+                    </a>
+                @endfor
+
+            </div>
+        @endif
+
+    </div>
 
     {{-- Panel penugasan dan aturan kapasitas --}}
     <div class="package-bottom-grid">
@@ -199,7 +237,6 @@
             @endforelse
 
         </div>
-
 
         <div class="panel capacity-panel">
 

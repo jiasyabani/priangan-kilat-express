@@ -6,6 +6,7 @@ use App\Models\Kurir;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -31,26 +32,58 @@ class KurirController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'kode_kurir' => ['required', 'string', 'max:20', 'unique:kurirs,kode_kurir'],
-            'no_telepon' => ['required', 'string', 'max:20'],
+            'nama' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email',
+            ],
+            'kode_kurir' => [
+                'required',
+                'string',
+                'max:20',
+                'unique:kurirs,kode_kurir',
+            ],
+            'no_telepon' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^[0-9+\-\s]+$/',
+                function ($attribute, $value, $fail) {
+                    $jumlahDigit = strlen(preg_replace('/\D/', '', $value));
+
+                    if ($jumlahDigit < 10) {
+                        $fail('Nomor telepon harus terdiri dari minimal 10 digit.');
+                    }
+                },
+            ],
+        ], [
+            'nama.required' => 'Nama kurir wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.unique' => 'Email sudah digunakan.',
+            'kode_kurir.required' => 'Kode kurir wajib diisi.',
+            'kode_kurir.unique' => 'Kode kurir sudah digunakan.',
+            'no_telepon.required' => 'Nomor telepon wajib diisi.',
+            'no_telepon.regex' => 'Format nomor telepon tidak valid.',
         ]);
 
         DB::transaction(function () use ($validated) {
-
-            // Membuat password sementara untuk akun kurir.
+            // Membuat password sementara minimal 8 karakter.
             $passwordSementara = Str::random(12);
 
             $user = User::create([
                 'name' => $validated['nama'],
                 'email' => $validated['email'],
-                'password' => $passwordSementara,
+                'password' => Hash::make($passwordSementara),
                 'role' => 'kurir',
                 'wajib_ganti_password' => true,
             ]);
 
-            // Menyimpan data kurir dan menghubungkannya dengan akun.
             Kurir::create([
                 'user_id' => $user->id,
                 'kode_kurir' => $validated['kode_kurir'],
@@ -58,7 +91,7 @@ class KurirController extends Controller
                 'aktif' => true,
             ]);
 
-            // Menampilkan password sementara satu kali kepada Admin.
+            // Password sementara ditampilkan kepada Admin.
             session()->flash('password_sementara', $passwordSementara);
         });
 
@@ -81,7 +114,11 @@ class KurirController extends Controller
         $kurir->load('user');
 
         $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:255'],
+            'nama' => [
+                'required',
+                'string',
+                'max:255',
+            ],
             'email' => [
                 'required',
                 'email',
@@ -94,18 +131,35 @@ class KurirController extends Controller
                 'max:20',
                 Rule::unique('kurirs', 'kode_kurir')->ignore($kurir->id),
             ],
-            'no_telepon' => ['required', 'string', 'max:20'],
+            'no_telepon' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^[0-9+\-\s]+$/',
+                function ($attribute, $value, $fail) {
+                    $jumlahDigit = strlen(preg_replace('/\D/', '', $value));
+
+                    if ($jumlahDigit < 10) {
+                        $fail('Nomor telepon harus terdiri dari minimal 10 digit.');
+                    }
+                },
+            ],
+        ], [
+            'nama.required' => 'Nama kurir wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.unique' => 'Email sudah digunakan.',
+            'kode_kurir.required' => 'Kode kurir wajib diisi.',
+            'kode_kurir.unique' => 'Kode kurir sudah digunakan.',
+            'no_telepon.required' => 'Nomor telepon wajib diisi.',
+            'no_telepon.regex' => 'Format nomor telepon tidak valid.',
         ]);
 
         DB::transaction(function () use ($validated, $kurir) {
-
-            // Memperbarui informasi akun kurir.
             $kurir->user->update([
                 'name' => $validated['nama'],
                 'email' => $validated['email'],
             ]);
 
-            // Memperbarui informasi data kurir.
             $kurir->update([
                 'kode_kurir' => $validated['kode_kurir'],
                 'no_telepon' => $validated['no_telepon'],
@@ -120,7 +174,6 @@ class KurirController extends Controller
     // Menonaktifkan kurir yang tidak sedang membawa paket Dikirim.
     public function deactivate(Kurir $kurir)
     {
-        // Memeriksa paket yang masih dalam proses pengiriman.
         $masihMengirim = $kurir->pakets()
             ->where('status', 'Dikirim')
             ->exists();
@@ -132,29 +185,35 @@ class KurirController extends Controller
             );
         }
 
-        // Mengubah status aktif kurir.
         $kurir->update([
             'aktif' => false,
         ]);
 
-        return back()->with('success', 'Kurir berhasil dinonaktifkan.');
+        return back()->with(
+            'success',
+            'Kurir berhasil dinonaktifkan.'
+        );
     }
 
     // Mereset password akun kurir.
     public function resetPassword(Kurir $kurir)
     {
-        // Membuat password sementara baru.
         $passwordSementara = Str::random(12);
 
-        $kurir->user->update([
-            'password' => $passwordSementara,
-            'wajib_ganti_password' => true,
-        ]);
+        DB::transaction(function () use ($kurir, $passwordSementara) {
+            $kurir->load('user');
 
-        // Menampilkan password sementara satu kali kepada Admin.
+            $kurir->user->update([
+                'password' => Hash::make($passwordSementara),
+                'wajib_ganti_password' => true,
+            ]);
+
+            // Mencabut seluruh token lama agar kurir harus login kembali.
+            $kurir->user->tokens()->delete();
+        });
+
         return back()
             ->with('success', 'Password akun kurir berhasil direset.')
             ->with('password_sementara', $passwordSementara);
     }
 }
-

@@ -13,7 +13,12 @@
     </div>
 </div>
 
-<form id="formInputPaket">
+<form
+    id="formInputPaket"
+    action="{{ route('admin.packages.store') }}"
+    method="POST"
+>
+    @csrf
 
     {{-- DATA PENGIRIM --}}
     <div class="panel package-panel">
@@ -284,13 +289,11 @@
             Batal
         </a>
 
-        <button
-            type="button"
-            class="primary-button"
-            disabled
-            title="Fitur simpan akan diaktifkan pada tahap integrasi database"
-        >
-            Simpan Paket
+       <button
+    type="submit"
+    class="primary-button"
+>
+    Simpan Paket
         </button>
     </div>
 
