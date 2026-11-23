@@ -25,3 +25,11 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Android Studio
+android-kurir/.gradle/
+android-kurir/.idea/
+android-kurir/.kotlin/
+android-kurir/**/build/
+android-kurir/local.properties
+android-kurir/.externalNativeBuild/
+android-kurir/.cxx/
